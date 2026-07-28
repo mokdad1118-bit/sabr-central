@@ -5,3 +5,4 @@ qrcode>=7.4
 Pillow>=10.0
 openpyxl>=3.1
 xlsxwriter>=3.2
+gunicorn>=20.1

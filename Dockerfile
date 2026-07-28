@@ -39,4 +39,4 @@ COPY . /app
 ENV PORT 10000
 
 # Use gunicorn to serve the Flask app; the app lives in sabr-central/sabr-central/app.py
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--chdir", "sabr-central/sabr-central", "app:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --chdir sabr-central/sabr-central app:app"]
