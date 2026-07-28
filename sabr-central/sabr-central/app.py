@@ -1,19 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, abort, jsonify, make_response
 import sqlite3
 import os
+import io
+import uuid
+import base64
+from functools import wraps
+from urllib.parse import quote
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-import uuid
-from functools import wraps
 from db import init_db
 from datetime import datetime
-from weasyprint import HTML
 from certificate_utils import build_certificate_context
-from flask import send_file
-import io
 import qrcode
-import base64
-from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = "change-this-secret-key"
@@ -24,6 +22,13 @@ DB_NAME = app.config["DATABASE"]
 
 EXAM_RESULTS_UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads", "exam_results")
 ALLOWED_EXAM_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+
+os.makedirs(os.path.dirname(DB_NAME), exist_ok=True)
+with app.app_context():
+    if not os.path.exists(DB_NAME):
+        conn = sqlite3.connect(DB_NAME)
+        conn.close()
+    init_db()
 
 
 def allowed_exam_image(filename):
@@ -148,6 +153,10 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+def render_cert_pdf(html):
+    from weasyprint import HTML
+    return HTML(string=html, base_url=app.root_path).write_pdf()
 
 
 def admin_required(f):
@@ -381,7 +390,10 @@ def certificate_pdf(student_id, exam_id):
         ctx["qr_data_uri"] = "data:image/png;base64," + base64.b64encode(qr_buffer.read()).decode("ascii")
 
         html = render_template(template_name, student=student, exam=exam, ctx=ctx)
-        pdf = HTML(string=html, base_url=app.root_path).write_pdf()
+        try:
+            pdf = render_cert_pdf(html)
+        except Exception as exc:
+            return f"PDF generation is unavailable: {exc}", 500
 
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -506,7 +518,10 @@ def certificate_download(student_id, exam_id):
         ctx["qr_data_uri"] = "data:image/png;base64," + base64.b64encode(qr_buffer.read()).decode("ascii")
 
         html = render_template(template_name, student=student, exam=exam, ctx=ctx)
-        pdf = HTML(string=html, base_url=app.root_path).write_pdf()
+        try:
+            pdf = render_cert_pdf(html)
+        except Exception as exc:
+            return f"PDF generation is unavailable: {exc}", 500
 
         response = make_response(pdf)
         response.headers["Content-Type"] = "application/pdf"
@@ -524,12 +539,6 @@ def certificate_download(student_id, exam_id):
 
     finally:
         conn.close()
-
-from flask import make_response, send_file, abort, request, render_template, session
-from weasyprint import HTML
-from urllib.parse import quote
-import io
-import base64
 
 def build_certificate_pdf(student_id, exam_id):
     conn = get_db_connection()
@@ -665,7 +674,10 @@ def build_certificate_pdf(student_id, exam_id):
         ctx["qr_data_uri"] = qr_data_uri
 
         html = render_template(template_name, student=student, exam=exam, ctx=ctx)
-        pdf = HTML(string=html, base_url=app.root_path).write_pdf()
+        try:
+            pdf = render_cert_pdf(html)
+        except Exception as exc:
+            return None, None, None, f"PDF generation is unavailable: {exc}"
         return pdf, student, exam, None
 
     finally:

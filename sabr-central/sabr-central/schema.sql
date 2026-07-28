@@ -1,28 +1,20 @@
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS centers;
-DROP TABLE IF EXISTS committee_members;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS exam_records;
-DROP TABLE IF EXISTS certificates;
-DROP TABLE IF EXISTS verification_logs;
-
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'committee_member'
 );
 
-CREATE TABLE centers (
+CREATE TABLE IF NOT EXISTS centers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-         TEXT NOT NULL,
+    center_name TEXT NOT NULL,
     location TEXT NOT NULL,
     mosque_name TEXT,
     sector TEXT,
     gender_type TEXT NOT NULL
 );
 
-CREATE TABLE committee_members (
+CREATE TABLE IF NOT EXISTS committee_members (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     full_name TEXT NOT NULL,
@@ -40,7 +32,7 @@ CREATE TABLE committee_members (
     FOREIGN KEY (center_id) REFERENCES centers (id)
 );
 
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     full_name TEXT NOT NULL,
     mother_name TEXT,
@@ -62,7 +54,7 @@ CREATE TABLE students (
     FOREIGN KEY (committee_member_id) REFERENCES committee_members (id)
 );
 
-CREATE TABLE exam_records (
+CREATE TABLE IF NOT EXISTS exam_records (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
     exam_type TEXT NOT NULL,
@@ -76,13 +68,13 @@ CREATE TABLE exam_records (
     FOREIGN KEY (student_id) REFERENCES students (id)
 );
 
-CREATE TABLE system_settings (
+CREATE TABLE IF NOT EXISTS system_settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE certificates (
+CREATE TABLE IF NOT EXISTS certificates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
     certificate_uuid TEXT UNIQUE NOT NULL,
@@ -94,7 +86,7 @@ CREATE TABLE certificates (
     FOREIGN KEY (student_id) REFERENCES students (id)
 );
 
-CREATE TABLE verification_logs (
+CREATE TABLE IF NOT EXISTS verification_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     certificate_uuid TEXT NOT NULL,
     verified_at TEXT DEFAULT CURRENT_TIMESTAMP,
