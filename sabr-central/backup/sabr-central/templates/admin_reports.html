@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقارير الإدارة</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef3f8;
+      direction: rtl;
+      color: #1f2d3d;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 14px 36px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f77a8, #365a83);
+      color: #fff;
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      margin: 0 0 4px;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.95;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .field {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid #dbe5ef;
+      box-shadow: 0 6px 14px rgba(38, 63, 92, 0.05);
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #5f7187;
+      margin-bottom: 6px;
+    }
+
+    .field select {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14px;
+      color: #1f2d3d;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .btn-primary { background: #4f77a8; color: #fff; }
+    .btn-success { background: #2e7d32; color: #fff; }
+
+    .stat {
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #e5edf4;
+      box-shadow: 0 6px 14px rgba(38, 63, 92, 0.05);
+      margin-bottom: 12px;
+    }
+
+    .title {
+      color: #6a7d92;
+      font-size: 12px;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .value {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .chart-card,
+    .table-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 10px;
+      border: 1px solid #e5edf4;
+      box-shadow: 0 8px 18px rgba(57, 82, 110, 0.06);
+    }
+
+    .chart-card {
+      margin-bottom: 14px;
+    }
+
+    .chart-head,
+    .table-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chart-head h2,
+    .table-head h2 {
+      margin: 0;
+      font-size: 16px;
+      color: #486281;
+    }
+
+    .hint {
+      color: #6b7b8c;
+      font-size: 12px;
+    }
+
+    #chart {
+      width: 100%;
+      height: 360px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      min-width: 900px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #e5edf4;
+      text-align: center;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    thead tr {
+      background: #f3f7fb;
+    }
+
+    .student-link {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .student-link:hover {
+      text-decoration: underline;
+    }
+
+    .badge-pass {
+      color: #137333;
+      font-weight: 700;
+    }
+
+    .badge-fail {
+      color: #b42318;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>تقارير الإدارة</h1>
+      <p>عرض السبر حسب السنة أو الشهر أو المركز</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="field">
+        <label for="yearSelect">السنة</label>
+        <select id="yearSelect"></select>
+      </div>
+      <div class="field">
+        <label for="monthSelect">الشهر</label>
+        <select id="monthSelect"></select>
+      </div>
+      <div class="field">
+        <label for="centerSelect">المركز</label>
+        <select id="centerSelect"></select>
+      </div>
+    </div>
+
+    <div class="actions">
+<a class="btn btn-success" id="exportExcelBtn" href="#">تصدير إلى Excel</a>
+      <a class="btn btn-primary" href="{{ url_for('admin_dashboard') }}">رجوع</a>
+    </div>
+
+    <div class="stat">
+      <div class="title">إجمالي مرات السبر</div>
+      <div class="value" id="totalCount">0</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <h2 id="chartTitle">الإحصائيات</h2>
+        <div class="hint" id="chartHint">اختر سنة ثم شهر</div>
+      </div>
+      <div id="chart"></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-head">
+        <h2>سجلات السبر</h2>
+        <div class="hint" id="recordsHint">السجلات حسب الفلتر المختار</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>اسم الأب</th>
+              <th>اسم المركز</th>
+              <th>نوع السبر</th>
+              <th>الفرع</th>
+              <th>العلامة</th>
+              <th>النتيجة</th>
+              <th>تاريخ السبر</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody">
+            <tr>
+              <td colspan="9">لا توجد بيانات</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script id="page-data" type="application/json">
+    {{ {"years": years, "months": months, "centers": centers} | tojson }}
+  </script>
+
+  <script>
+    const pageData = JSON.parse(document.getElementById("page-data").textContent);
+
+    const yearSelect = document.getElementById("yearSelect");
+    const monthSelect = document.getElementById("monthSelect");
+    const centerSelect = document.getElementById("centerSelect");
+    const totalCount = document.getElementById("totalCount");
+    const chartTitle = document.getElementById("chartTitle");
+    const chartHint = document.getElementById("chartHint");
+    const recordsHint = document.getElementById("recordsHint");
+    const tbody = document.getElementById("recordsTableBody");
+const exportExcelBtn = document.getElementById("exportExcelBtn");
+
+function updateExportLink() {
+  const params = new URLSearchParams();
+  if (yearSelect.value !== "all") params.append("year", yearSelect.value);
+  if (monthSelect.value !== "all") params.append("month", monthSelect.value);
+  if (centerSelect.value !== "all") params.append("center_id", centerSelect.value);
+
+  exportExcelBtn.href = `/admin/reports/export-excel?${params.toString()}`;
+}
+
+yearSelect.addEventListener("change", () => {
+  updateExportLink();
+  refreshAll();
+});
+monthSelect.addEventListener("change", () => {
+  updateExportLink();
+  refreshAll();
+});
+centerSelect.addEventListener("change", () => {
+  updateExportLink();
+  refreshAll();
+});
+
+updateExportLink();
+    function fillSelect(select, items, allText) {
+      select.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "all";
+      first.textContent = allText;
+      select.appendChild(first);
+
+      items.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        select.appendChild(opt);
+      });
+    }
+
+    function fillCenters(select, items) {
+      select.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "all";
+      first.textContent = "كل المراكز";
+      select.appendChild(first);
+
+      items.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.id;
+        opt.textContent = item.name;
+        select.appendChild(opt);
+      });
+    }
+
+    fillSelect(yearSelect, pageData.years, "كل السنوات");
+    fillSelect(monthSelect, pageData.months, "كل الأشهر");
+    fillCenters(centerSelect, pageData.centers);
+
+    async function loadChart() {
+      const params = new URLSearchParams();
+      if (yearSelect.value !== "all") params.append("year", yearSelect.value);
+      if (monthSelect.value !== "all") params.append("month", monthSelect.value);
+      if (centerSelect.value !== "all") params.append("center_id", centerSelect.value);
+
+      let view = "month";
+      if (centerSelect.value !== "all" && yearSelect.value === "all" && monthSelect.value === "all") {
+        view = "center";
+      } else if (yearSelect.value !== "all" && monthSelect.value === "all") {
+        view = "year";
+      } else if (yearSelect.value !== "all" && monthSelect.value !== "all") {
+        view = "month";
+      }
+      params.append("view", view);
+
+      const res = await fetch(`/admin/reports/data?${params.toString()}`);
+      const data = await res.json();
+
+      totalCount.textContent = data.total || 0;
+      chartTitle.textContent = data.title || "الإحصائيات";
+      chartHint.textContent = data.hint || "";
+
+      Plotly.newPlot("chart", [{
+        type: "pie",
+        labels: data.labels || [],
+        values: data.values || [],
+        textinfo: "label+percent",
+        hovertemplate: "%{label}<br>العدد: %{value}<br>النسبة: %{percent}<extra></extra>"
+      }], {
+        margin: { t: 10, r: 10, b: 10, l: 10 },
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+        font: { family: "Arial, sans-serif", color: "#1f2d3d" },
+        showlegend: true
+      }, {
+        responsive: true,
+        displayModeBar: false
+      });
+    }
+
+    async function loadRecords() {
+      const params = new URLSearchParams();
+      if (yearSelect.value !== "all") params.append("year", yearSelect.value);
+      if (monthSelect.value !== "all") params.append("month", monthSelect.value);
+      if (centerSelect.value !== "all") params.append("center_id", centerSelect.value);
+
+      const res = await fetch(`/admin/reports/records?${params.toString()}`);
+      const data = await res.json();
+
+      recordsHint.textContent = `عدد السجلات: ${data.count || 0}`;
+      tbody.innerHTML = "";
+
+      if (!data.records || !data.records.length) {
+        tbody.innerHTML = `<tr><td colspan="9">لا توجد سجلات</td></tr>`;
+        return;
+      }
+
+      data.records.forEach((r, index) => {
+        const tr = document.createElement("tr");
+        const statusClass = (r.status === "ناجح") ? "badge-pass" : "badge-fail";
+        const studentUrl = `/member/students/${r.student_id}`;
+
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td><a class="student-link" href="${studentUrl}">${r.student_name || ''}</a></td>
+          <td>${r.father_name || ''}</td>
+          <td>${r.center_name || ''}</td>
+          <td>${r.exam_type || ''}</td>
+          <td>${r.level_name || ''}</td>
+          <td>${r.mark ?? ''}</td>
+          <td class="${statusClass}">${r.status || ''}</td>
+          <td>${r.exam_datetime || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function refreshAll() {
+      await loadChart();
+      await loadRecords();
+    }
+
+    yearSelect.addEventListener("change", refreshAll);
+    monthSelect.addEventListener("change", refreshAll);
+    centerSelect.addEventListener("change", refreshAll);
+
+    refreshAll();
+  </script>
+</body>
+</html>

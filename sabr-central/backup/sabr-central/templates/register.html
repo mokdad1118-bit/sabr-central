@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-strong: #ffffff;
+      --primary: #5f7ea8;
+      --primary-dark: #486281;
+      --accent: #8aa6c1;
+      --text: #1f2d3d;
+      --muted: #6b7b8c;
+      --border: #dce5ee;
+      --shadow: 0 12px 30px rgba(57, 82, 110, 0.10);
+      --shadow-hover: 0 18px 36px rgba(57, 82, 110, 0.16);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      direction: rtl;
+      font-family: "Cairo", "Amiri", "Arial", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(138, 166, 193, 0.16), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(95, 126, 168, 0.12), transparent 26%),
+        linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 48px 18px 40px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Amiri", "Cairo", serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-align: center;
+    }
+
+    .msg {
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin: 0 0 16px;
+      border: 1px solid transparent;
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      text-align: right;
+    }
+
+    .msg.success {
+      background: #edf7f1;
+      border-color: #cfead9;
+      color: #1f6b43;
+    }
+
+    .msg.error {
+      background: #fff1f1;
+      border-color: #ffd1d1;
+      color: #a33a3a;
+    }
+
+    .msg.info {
+      background: #eef5fb;
+      border-color: #d6e6f5;
+      color: #35567a;
+    }
+
+    form {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(220, 229, 238, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px 24px;
+      margin-top: 22px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 8px;
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fbfdff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-family: "Cairo", "Amiri", sans-serif;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: rgba(95, 126, 168, 0.55);
+      box-shadow: 0 0 0 4px rgba(95, 126, 168, 0.12);
+      background: #fff;
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 20px;
+      border: none;
+      cursor: pointer;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      box-shadow: 0 10px 22px rgba(95, 126, 168, 0.22);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-family: "Cairo", "Amiri", sans-serif;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(95, 126, 168, 0.28);
+    }
+
+    a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin: 16px 0 0;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 28px 14px 30px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      form {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>إنشاء حساب</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p class="msg {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="post">
+      <label>اسم المستخدم</label>
+      <input type="text" name="username" required>
+
+      <label>كلمة المرور</label>
+      <input type="password" name="password" required>
+
+      <button type="submit">تسجيل</button>
+    </form>
+
+    <p><a href="/login">لديك حساب؟ سجل الدخول</a></p>
+  </div>
+</body>
+</html>

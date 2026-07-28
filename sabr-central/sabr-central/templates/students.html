@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الطلاب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-strong: #ffffff;
+      --primary: #5f7ea8;
+      --primary-dark: #486281;
+      --accent: #8aa6c1;
+      --text: #1f2d3d;
+      --muted: #6b7b8c;
+      --border: #dce5ee;
+      --shadow: 0 12px 30px rgba(57, 82, 110, 0.10);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      direction: rtl;
+      font-family: "Cairo", "Amiri", "Arial", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(138, 166, 193, 0.16), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(95, 126, 168, 0.12), transparent 26%),
+        linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 18px 40px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Amiri", "Cairo", serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-align: center;
+    }
+
+    .panel {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(220, 229, 238, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-top: 22px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fbfdff;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-family: "Cairo", "Amiri", sans-serif;
+    }
+
+    .search-box:focus {
+      border-color: rgba(95, 126, 168, 0.55);
+      box-shadow: 0 0 0 4px rgba(95, 126, 168, 0.12);
+      background: #fff;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(220, 229, 238, 0.9);
+      box-shadow: var(--shadow);
+      background: var(--surface-strong);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+      background: #fff;
+    }
+
+    thead th {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      text-align: right;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      border-top: 1px solid #edf2f7;
+      padding: 14px 16px;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fbfe;
+    }
+
+    tbody tr:hover {
+      background: #f2f7fc;
+    }
+
+    td a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    td a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      box-shadow: 0 8px 18px rgba(95, 126, 168, 0.18);
+      font-family: "Cairo", "Amiri", sans-serif;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #d9534f 0%, #b03a37 100%);
+      box-shadow: 0 8px 18px rgba(176, 58, 55, 0.18);
+    }
+
+    .delete-form {
+      margin: 0;
+      display: inline;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(95, 126, 168, 0.10);
+      border: 1px solid rgba(95, 126, 168, 0.18);
+      display: inline-block;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-link a:hover {
+      background: rgba(95, 126, 168, 0.16);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px 14px 30px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      table {
+        min-width: 860px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>جميع الطلاب</h1>
+
+    <div class="panel">
+      <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن طالب...">
+
+      <div class="table-wrap">
+        <table id="studentsTable">
+          <thead>
+            <tr>
+              <th>الاسم</th>
+              <th>الرقم الوطني</th>
+              <th>المركز</th>
+              <th>عضو اللجنة</th>
+              <th>التفاصيل</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <td>
+                <a href="{{ url_for('member_student_detail', student_id=student['id']) }}">
+                  {{ student['full_name'] }}
+                </a>
+              </td>
+              <td>{{ student['national_id'] or '' }}</td>
+              <td>{{ student['center_name'] or '' }}</td>
+              <td>{{ student['committee_name'] or '' }}</td>
+              <td>
+                <a href="{{ url_for('member_student_detail', student_id=student['id']) }}">فتح</a>
+              </td>
+              <td>
+                <form class="delete-form" method="post" action="{{ url_for('delete_student', student_id=student['id']) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا الطالب؟ سيتم حذف جميع بياناته المرتبطة.');">
+                  <button type="submit" class="btn btn-danger">حذف</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="{{ url_for('dashboard') }}">رجوع</a>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("studentsTable");
+
+    searchInput.addEventListener("keyup", function() {
+      const filter = this.value.toLowerCase();
+      const rows = table.querySelectorAll("tbody tr");
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>

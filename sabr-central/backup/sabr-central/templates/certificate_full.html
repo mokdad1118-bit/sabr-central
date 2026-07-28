@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شهادة حفظ كامل - {{ ctx['student_name'] }}</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      direction: rtl;
+      font-family: "Amiri", "Traditional Arabic", "Arial", sans-serif;
+      background: #e8e8e8;
+    }
+
+    .toolbar {
+      max-width: 297mm;
+      margin: 12px auto;
+      padding: 0 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar button,
+    .toolbar a {
+      background: #0f4c81;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toolbar button:hover,
+    .toolbar a:hover {
+      background: #0b3a62;
+    }
+
+    .certificate-wrapper {
+      width: 297mm;
+      margin: 0 auto 24px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .certificate {
+  position: relative;
+  width: 297mm;
+  height: 210mm;
+  overflow: hidden;
+  background-image: url("{{ ctx['background_data_uri'] }}");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+    .field {
+      position: absolute;
+      color: #c28b26;
+      font-size: 30px;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
+      font-family: "Amiri", "Traditional Arabic", "Arial", sans-serif;
+    }
+
+    .student-name { top: 88mm; right: 90mm; }
+    .father-name { top: 88mm; right: 180mm; }
+    .birth-town { top: 88mm; right: 225mm; }
+    .birth-year { top: 103mm; right: 82mm; }
+    .mosque-name { top: 102mm; right: 163mm; }
+    .grade { top: 117mm; right: 200mm; }
+    .gregorian-date { top: 55mm; right: 231mm; font-size: 24px; }
+    .halaqah-director { top: 155mm; right: 70mm; }
+    .endowments-director { top: 155mm; right: 228mm; }
+
+    .barcode-box {
+      position: absolute;
+      top: 20mm;
+      left: 33mm;
+      width: 35mm;
+      text-align: center;
+    }
+
+    .barcode-box img {
+      width: 35mm;
+      height: 35mm;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #whatsappModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #whatsappModal .modal-box {
+      background: #fff;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 12px;
+      padding: 20px;
+      direction: rtl;
+      font-family: "Amiri", Arial, sans-serif;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .toolbar {
+        display: none;
+      }
+
+      .certificate-wrapper {
+        box-shadow: none;
+        margin: 0;
+      }
+
+      .certificate {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <a href="{{ url_for('certificate_download', student_id=student['id'], exam_id=exam['id']) }}">
+      تحميل الشهادة PDF
+    </a>
+
+    <button type="button" onclick="openWhatsAppModal()">إرسال عبر واتساب</button>
+
+    <a href="{{ url_for('member_student_detail', student_id=student['id']) }}">رجوع</a>
+  </div>
+
+  <div class="certificate-wrapper">
+    <div class="certificate">
+      <div class="field student-name">{{ ctx['student_name'] }}</div>
+      <div class="field father-name">{{ ctx['father_name'] }}</div>
+      <div class="field birth-town">{{ ctx['birth_town'] }}</div>
+      <div class="field birth-year">{{ ctx['birth_year'] }}</div>
+      <div class="field mosque-name">{{ ctx['mosque_name'] }}</div>
+      <div class="field grade">{{ ctx['mark'] if ctx['mark'] is not none else '-' }}</div>
+      <div class="field gregorian-date">{{ ctx['gregorian_date'] }}</div>
+      <div class="field halaqah-director">{{ ctx['halaqah_director'] }}</div>
+      <div class="field endowments-director">{{ ctx['endowments_director'] }}</div>
+
+      <div class="barcode-box">
+<img src="{{ ctx['qr_data_uri'] }}" alt="Barcode">      </div>
+    </div>
+  </div>
+
+  <div id="whatsappModal">
+    <div class="modal-box">
+      <h3 style="margin-top:0; margin-bottom:16px;">إرسال الشهادة عبر واتساب</h3>
+
+      <label for="whatsappNumber" style="display:block; margin-bottom:8px;">رقم الطالب</label>
+      <input id="whatsappNumber" type="text"
+             value="+963{{ student['phone_number'] or '' }}"
+             placeholder="مثال: 944123456"
+             style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:16px;">
+
+      <div style="display:flex; gap:10px; justify-content:flex-start;">
+        <button type="button" onclick="sendWhatsApp()"
+                style="background:#25D366; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer;">
+          إرسال
+        </button>
+        <button type="button" onclick="closeWhatsAppModal()"
+                style="background:#999; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer;">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openWhatsAppModal() {
+      document.getElementById('whatsappModal').style.display = 'flex';
+    }
+
+    function closeWhatsAppModal() {
+      document.getElementById('whatsappModal').style.display = 'none';
+    }
+
+    function normalizePhone(number) {
+      return number.replace(/[^\d]/g, '');
+    }
+
+    function addSyriaCode(phone) {
+      phone = normalizePhone(phone);
+      if (!phone) return '';
+      if (phone.startsWith('963')) return phone;
+      if (phone.startsWith('0')) phone = phone.substring(1);
+      return '963' + phone;
+    }
+
+    function sendWhatsApp() {
+      let phone = document.getElementById('whatsappNumber').value.trim();
+      phone = addSyriaCode(phone);
+
+      if (!phone) {
+        alert('يرجى إدخال رقم صحيح');
+        return;
+      }
+
+      const message = `السلام عليكم ورحمة الله وبركاته
+شهادة الطالب: {{ ctx['student_name'] }}
+يمكنك عرض الشهادة من هنا:
+{{ url_for('verify_certificate', student_id=student['id'], exam_id=exam['id'], _external=True) }}`;
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+      closeWhatsAppModal();
+    }
+
+    document.getElementById('whatsappModal').addEventListener('click', function(e) {
+      if (e.target === this) closeWhatsAppModal();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabr Central</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>مرحبًا بك في Sabr Central</h1>
+    {% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+    <p>هذا هو أول إصدار من الموقع باستخدام Python وHTML وCSS وJavaScript.</p>
+
+    <button id="btnMessage">جلب رسالة من Python</button>
+    <p id="result"></p>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

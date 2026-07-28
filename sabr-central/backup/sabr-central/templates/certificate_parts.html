@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شهادة حفظ أجزاء القرآن - {{ ctx['student_name'] }}</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      direction: rtl;
+      font-family: "Amiri", "Traditional Arabic", "Arial", sans-serif;
+      background: #e8e8e8;
+    }
+
+    .toolbar {
+      max-width: 297mm;
+      margin: 12px auto;
+      padding: 0 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar button,
+    .toolbar a {
+      background: #0f4c81;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toolbar button:hover,
+    .toolbar a:hover {
+      background: #0b3a62;
+    }
+
+    .certificate-wrapper {
+      width: 297mm;
+      margin: 0 auto 24px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .certificate {
+      position: relative;
+      width: 297mm;
+      height: 210mm;
+      overflow: hidden;
+
+      {% if ctx.get('background_data_uri') %}
+        background-image: url("{{ ctx['background_data_uri'] }}");
+        {% endif %}
+
+        background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+    }
+
+    .field {
+      position: absolute;
+      color: #c28b26;
+      font-size: 30px;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
+      font-family: "Amiri", "Traditional Arabic", "Arial", sans-serif;
+    }
+
+    .parts-student-name { top: 88mm; right: 90mm; }
+    .parts-father-name { top: 88mm; right: 174mm; }
+    .parts-birth-town { top: 88mm; right: 220mm; }
+    .parts-birth-year { top: 104mm; right: 88mm; font-size: 24px; }
+    .parts-mosque-name { top: 100mm; right: 159mm; }
+    .parts-memorized-parts { top: 116mm; right: 100mm; }
+    .parts-grade { top: 117mm; right: 218mm; font-size: 28px; }
+    .parts-gregorian-date { top: 57mm; right: 232mm; font-size: 24px; }
+    .parts-halaqah-director { top: 155mm; right: 60mm; }
+    .parts-endowments-director { top: 155mm; right: 232mm; }
+
+    .barcode-box {
+      position: absolute;
+      top: 20mm;
+      left: 33mm;
+      width: 35mm;
+      text-align: center;
+    }
+
+    .barcode-box img {
+      width: 35mm;
+      height: 35mm;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .toolbar {
+        display: none;
+      }
+
+      .certificate-wrapper {
+        box-shadow: none;
+        margin: 0;
+      }
+
+      .certificate {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="openWhatsAppModal()">إرسال عبر واتساب</button>
+
+    <a href="{{ url_for('certificate_download', student_id=student['id'], exam_id=exam['id']) }}">
+      تحميل الشهادة PDF
+    </a>
+
+    {% if session.get('role') == 'committee_member' %}
+      <a href="{{ url_for('member_student_detail', student_id=student['id']) }}">رجوع</a>
+    {% else %}
+      <a href="{{ url_for('member_student_detail', student_id=student['id']) }}">رجوع</a>
+    {% endif %}
+  </div>
+
+  <div class="certificate-wrapper">
+    <div class="certificate">
+      <div class="field parts-student-name">{{ ctx['student_name'] }}</div>
+      <div class="field parts-father-name">{{ ctx['father_name'] }}</div>
+      <div class="field parts-birth-town">{{ ctx['birth_town'] }}</div>
+      <div class="field parts-birth-year">{{ ctx['birth_year'] }}</div>
+      <div class="field parts-mosque-name">{{ ctx['mosque_name'] }}</div>
+
+      <div class="field parts-memorized-parts">
+        {{ ctx['memorized_parts_number_words'] if ctx['memorized_parts_number_words'] else ctx['memorized_parts_number'] }}
+      </div>
+
+      <div class="field parts-grade">{{ ctx['mark'] if ctx['mark'] is not none else '-' }}</div>
+      <div class="field parts-gregorian-date">{{ ctx['gregorian_date'] }}</div>
+      <div class="field parts-halaqah-director">{{ ctx['halaqah_director'] }}</div>
+      <div class="field parts-endowments-director">{{ ctx['endowments_director'] }}</div>
+
+      <div class="barcode-box">
+  {% if ctx.get('qr_data_uri') %}
+    <img src="{{ ctx['qr_data_uri'] }}" alt="Barcode">
+  {% endif %}
+</div>
+    </div>
+  </div>
+
+  <div id="whatsappModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; width:90%; max-width:420px; border-radius:12px; padding:20px; direction:rtl; font-family:Amiri, Arial, sans-serif;">
+      <h3 style="margin-top:0; margin-bottom:16px;">إرسال الشهادة عبر واتساب</h3>
+
+      <label for="whatsappNumber" style="display:block; margin-bottom:8px;">رقم الطالب</label>
+      <input id="whatsappNumber" type="text"
+             value="+963{{ student['phone_number'] or '' }}"
+             style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:16px;">
+
+      <div style="display:flex; gap:10px; justify-content:flex-start;">
+        <button type="button" onclick="sendWhatsApp()"
+                style="background:#25D366; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer;">
+          إرسال
+        </button>
+        <button type="button" onclick="closeWhatsAppModal()"
+                style="background:#999; color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer;">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openWhatsAppModal() {
+      document.getElementById('whatsappModal').style.display = 'flex';
+    }
+
+    function closeWhatsAppModal() {
+      document.getElementById('whatsappModal').style.display = 'none';
+    }
+
+    function normalizePhone(number) {
+      return number.replace(/[^\d]/g, '');
+    }
+
+    function sendWhatsApp() {
+      let phone = document.getElementById('whatsappNumber').value.trim();
+      phone = normalizePhone(phone);
+
+      if (!phone) {
+        alert('يرجى إدخال رقم صحيح');
+        return;
+      }
+
+      const message = `السلام عليكم ورحمة الله وبركاته
+شهادة الطالب: {{ ctx['student_name'] }}
+يمكنك عرض الشهادة من هنا:
+{{ url_for('verify_certificate', student_id=student['id'], exam_id=exam['id'], _external=True) }}`;
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+      closeWhatsAppModal();
+    }
+
+    document.getElementById('whatsappModal').addEventListener('click', function(e) {
+      if (e.target === this) closeWhatsAppModal();
+    });
+  </script>
+</body>
+</html>

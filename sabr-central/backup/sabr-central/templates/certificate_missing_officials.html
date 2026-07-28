@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تعذر طباعة الشهادة</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>تعذر طباعة الشهادة</h1>
+    <p class="msg error">{{ message }}</p>
+    <p style="margin-top:20px;">
+      {% if session.get('role') == 'committee_member' %}
+        <a href="{{ url_for('member_student_detail', student_id=student_id) }}">رجوع</a>
+      {% else %}
+        <a href="{{ url_for('student_detail', student_id=student_id) }}">رجوع</a>
+      {% endif %}
+    </p>
+  </div>
+</body>
+</html>
