@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>شهادة نظراً كامل - {{ ctx['student_name'] }}</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
+{% extends "base.html" %}
+{% block title %}شهادة نظراً كامل - {{ ctx['student_name'] }}{% endblock %}
+{% block head_extra %}
+<style>
     @page {
       size: A4 landscape;
       margin: 0;
@@ -142,9 +136,9 @@ background-image: url("{{ ctx['background_data_uri'] }}");      background-repea
       }
     }
   </style>
-</head>
-<body>
-  <div class="toolbar">
+{% endblock %}
+{% block content %}
+<div class="toolbar">
 
     <a href="{{ url_for('certificate_download', student_id=student['id'], exam_id=exam['id']) }}">
       تحميل الشهادة PDF
@@ -198,8 +192,9 @@ background-image: url("{{ ctx['background_data_uri'] }}");      background-repea
       </div>
     </div>
   </div>
-
-  <script>
+{% endblock %}
+{% block scripts %}
+<script>
     function openWhatsAppModal() {
       document.getElementById('whatsappModal').style.display = 'flex';
     }
@@ -249,5 +244,4 @@ background-image: url("{{ ctx['background_data_uri'] }}");      background-repea
       if (e.target === this) closeWhatsAppModal();
     });
   </script>
-</body>
-</html>
+{% endblock %}

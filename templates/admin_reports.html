@@ -1,213 +1,6 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تقارير الإدارة</title>
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef3f8;
-      direction: rtl;
-      color: #1f2d3d;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px 14px 36px;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #4f77a8, #365a83);
-      color: #fff;
-      border-radius: 18px;
-      padding: 16px 18px;
-      margin-bottom: 14px;
-    }
-
-    .header h1 {
-      margin: 0 0 4px;
-      font-size: 22px;
-    }
-
-    .header p {
-      margin: 0;
-      font-size: 13px;
-      opacity: 0.95;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .field {
-      background: #fff;
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid #dbe5ef;
-      box-shadow: 0 6px 14px rgba(38, 63, 92, 0.05);
-    }
-
-    .field label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #5f7187;
-      margin-bottom: 6px;
-    }
-
-    .field select {
-      width: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: inherit;
-      font-size: 14px;
-      color: #1f2d3d;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      display: inline-block;
-      text-decoration: none;
-      border: none;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: inherit;
-    }
-
-    .btn-primary { background: #4f77a8; color: #fff; }
-    .btn-success { background: #2e7d32; color: #fff; }
-
-    .stat {
-      background: #fff;
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid #e5edf4;
-      box-shadow: 0 6px 14px rgba(38, 63, 92, 0.05);
-      margin-bottom: 12px;
-    }
-
-    .title {
-      color: #6a7d92;
-      font-size: 12px;
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
-
-    .value {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .chart-card,
-    .table-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 10px;
-      border: 1px solid #e5edf4;
-      box-shadow: 0 8px 18px rgba(57, 82, 110, 0.06);
-    }
-
-    .chart-card {
-      margin-bottom: 14px;
-    }
-
-    .chart-head,
-    .table-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .chart-head h2,
-    .table-head h2 {
-      margin: 0;
-      font-size: 16px;
-      color: #486281;
-    }
-
-    .hint {
-      color: #6b7b8c;
-      font-size: 12px;
-    }
-
-    #chart {
-      width: 100%;
-      height: 360px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      min-width: 900px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #e5edf4;
-      text-align: center;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    thead tr {
-      background: #f3f7fb;
-    }
-
-    .student-link {
-      color: #1d4ed8;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .student-link:hover {
-      text-decoration: underline;
-    }
-
-    .badge-pass {
-      color: #137333;
-      font-weight: 700;
-    }
-
-    .badge-fail {
-      color: #b42318;
-      font-weight: 700;
-    }
-
-    @media (max-width: 900px) {
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
+{% extends "base.html" %}
+{% block title %}تقارير الإدارة{% endblock %}{% block content %}
+<div class="container">
     <div class="header">
       <h1>تقارير الإدارة</h1>
       <p>عرض السبر حسب السنة أو الشهر أو المركز</p>
@@ -275,12 +68,12 @@
       </div>
     </div>
   </div>
-
-  <script id="page-data" type="application/json">
+{% endblock %}
+{% block scripts %}
+<script id="page-data" type="application/json">
     {{ {"years": years, "months": months, "centers": centers} | tojson }}
   </script>
-
-  <script>
+<script>
     const pageData = JSON.parse(document.getElementById("page-data").textContent);
 
     const yearSelect = document.getElementById("yearSelect");
@@ -439,5 +232,4 @@ updateExportLink();
 
     refreshAll();
   </script>
-</body>
-</html>
+{% endblock %}

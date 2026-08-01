@@ -1,4 +1,35 @@
-/* Shared responsive theme for Sabr Central */
+from pathlib import Path
+import re
+
+BASE_PATH = Path('templates/base.html')
+STYLE_PATH = Path('static/css/style.css')
+
+BASE_CONTENT = '''<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5f7ea8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="sabrmarkze">
+  <title>{% block title %}Sabr Central{% endblock %}</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+  <link rel="icon" href="{{ url_for('static', filename='icons/icon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/pwa.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+'''
+
+STYLE_CONTENT = '''/* Shared responsive theme for Sabr Central */
 :root {
   --bg: #f4f7fb;
   --bg-soft: #eef3f8;
@@ -58,128 +89,6 @@ textarea {
   width: min(100%, var(--max-width));
   margin: 0 auto;
   padding: 32px 20px 40px;
-}
-
-.container.narrow {
-  max-width: 520px;
-}
-
-.back {
-  display: block;
-  text-align: center;
-  margin-top: 15px;
-  text-decoration: none;
-  color: var(--primary-dark);
-  font-weight: 700;
-}
-
-.box {
-  max-width: 520px;
-  margin: 80px auto;
-  background: var(--surface-strong);
-  padding: 30px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  background: rgba(95, 126, 168, 0.12);
-  color: var(--primary-dark);
-  border: 1px solid rgba(95, 126, 168, 0.18);
-}
-
-.badge-pass {
-  background: rgba(46, 125, 50, 0.12);
-  color: #205e33;
-  border-color: rgba(46, 125, 50, 0.18);
-}
-
-.badge-fail {
-  background: rgba(217, 83, 79, 0.12);
-  color: #7a2a2a;
-  border-color: rgba(217, 83, 79, 0.18);
-}
-
-.members-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.members-list li {
-  background: var(--surface);
-  border: 1px solid rgba(220, 229, 238, 0.9);
-  border-radius: 14px;
-  padding: 12px 14px;
-}
-
-.member-link {
-  color: var(--primary-dark);
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.delete-form {
-  margin: 0;
-  display: inline;
-}
-
-.actions-cell {
-  white-space: nowrap;
-}
-
-.top-actions {
-  width: 100%;
-}
-
-.member-link:hover {
-  text-decoration: underline;
-}
-
-.search-box {
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: #fbfdff;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  font-family: inherit;
-}
-
-.search-box:focus {
-  border-color: rgba(95, 126, 168, 0.55);
-  box-shadow: 0 0 0 4px rgba(95, 126, 168, 0.12);
-  background: #fff;
-}
-
-.error-box {
-  background: #fff1f1;
-  border: 1px solid #f7d3d3;
-  border-radius: 14px;
-  padding: 14px;
-  color: #a33a3a;
-}
-
-.student-box {
-  background: #fbfdff;
-  border: 1px solid #e3ecf7;
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.student-box strong {
-  color: var(--primary-dark);
 }
 
 .page-title,
@@ -404,9 +313,7 @@ a.btn {
 button:hover,
 .btn:hover,
 a.btn:hover,
-a.button:hover,
-.btn-primary:hover,
-.btn-success:hover {
+a.button:hover {
   transform: translateY(-1px);
   filter: brightness(1.03);
   box-shadow: 0 16px 32px rgba(95, 126, 168, 0.25);
@@ -427,39 +334,10 @@ a.button:hover,
 .link-pill,
 .back-link a,
 .logout,
-.link-button,
-.btn-primary,
-.action-btn {
+.link-button {
   background: rgba(95, 126, 168, 0.12);
   color: var(--primary-dark);
   box-shadow: none;
-}
-
-.btn-primary {
-  background: var(--primary);
-    color: #fff;
-  }
-
-  .btn-success {
-    background: linear-gradient(135deg, #2e7d32 0%, #1f5c27 100%);
-    color: #fff;
-  }
-
-  .status-success {
-    background: rgba(46, 125, 50, 0.12);
-    border-color: rgba(46, 125, 50, 0.18);
-  }
-
-  .status-fail {
-    background: rgba(217, 83, 79, 0.12);
-    border-color: rgba(217, 83, 79, 0.18);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #fff;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  box-shadow: 0 12px 26px rgba(95, 126, 168, 0.2);
-  padding: 12px 18px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .back-link,
@@ -467,8 +345,7 @@ a.button:hover,
 .btn-row,
 .toolbar,
 .actions,
-.action-row,
-.top-actions {
+.action-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -780,3 +657,109 @@ th a:hover {
     color: var(--muted);
   }
 }
+'''
+
+COMMON_HEAD_PATTERNS = [
+    r'<title>.*?</title>',
+    r'<meta[^>]*charset[^>]*?>',
+    r'<meta[^>]*name=["\']viewport["\'][^>]*?>',
+    r'<meta[^>]*name=["\']theme-color["\'][^>]*?>',
+    r'<meta[^>]*name=["\']apple-mobile-web-app-capable["\'][^>]*?>',
+    r'<meta[^>]*name=["\']apple-mobile-web-app-title["\'][^>]*?>',
+    r'<link[^>]*rel=["\']manifest["\'][^>]*?>',
+    r'<link[^>]*rel=["\']icon["\'][^>]*?>',
+    r'<link[^>]*href=["\'][^"\']*googleapis[^"\']*["\'][^>]*?>',
+    r'<link[^>]*href=["\']{{\s*url_for\(\s*\'static\'\s*,\s*filename\s*=\s*\'css/style\.css\'\s*\)\s*}}["\'][^>]*?>',
+    r'<link[^>]*rel=["\']stylesheet["\'][^>]*href=["\'][^"\']*style\.css["\'][^>]*?>',
+    r'<link[^>]*rel=["\']preconnect["\'][^>]*?>',
+]
+
+
+def normalize_head_extra(text: str) -> str:
+    result = text
+    result = re.sub(r'<!DOCTYPE html[^>]*>\s*<html[^>]*>\s*<head[^>]*>', '', result, flags=re.I|re.S)
+    result = re.sub(r'</head>\s*$', '', result, flags=re.I|re.S)
+    result = re.sub(r'<html[^>]*>', '', result, flags=re.I|re.S)
+    result = re.sub(r'</html>', '', result, flags=re.I|re.S)
+    result = re.sub(r'<head[^>]*>', '', result, flags=re.I|re.S)
+    result = re.sub(r'<body[^>]*>', '', result, flags=re.I|re.S)
+    result = re.sub(r'</body>', '', result, flags=re.I|re.S)
+    for pat in COMMON_HEAD_PATTERNS:
+        result = re.sub(pat, '', result, flags=re.I|re.S)
+    result = result.strip()
+    return result
+
+
+def extract_scripts(body: str) -> tuple[str, str]:
+    scripts = re.findall(r'<script\b[^>]*?>.*?</script>', body, flags=re.I|re.S)
+    filtered = [s for s in scripts if 'pwa.js' not in s]
+    body = re.sub(r'<script\b[^>]*?>.*?</script>', '', body, flags=re.I|re.S)
+    return body.strip(), '\n'.join(filtered).strip()
+
+
+if __name__ == '__main__':
+    BASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    BASE_PATH.write_text(BASE_CONTENT, encoding='utf-8')
+    STYLE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STYLE_PATH.write_text(STYLE_CONTENT, encoding='utf-8')
+
+    for path in sorted(Path('templates').glob('*.html')):
+        if path.name == 'base.html':
+            continue
+        text = path.read_text(encoding='utf-8')
+        if '{% extends "base.html" %}' in text:
+            title_match = re.search(r'{% block title %}(.*?){% endblock %}', text, flags=re.S)
+            title_text = title_match.group(1).strip() if title_match else 'Sabr Central'
+            head_extra_match = re.search(r'{% block head_extra %}(.*?){% endblock %}', text, flags=re.S)
+            content_match = re.search(r'{% block content %}(.*?){% endblock %}', text, flags=re.S)
+            scripts_match = re.search(r'{% block scripts %}(.*?){% endblock %}', text, flags=re.S)
+            head_extra_raw = head_extra_match.group(1) if head_extra_match else ''
+            styles = re.findall(r'<style[^>]*?>.*?</style>', head_extra_raw, flags=re.S)
+            head_extra = '\n'.join(styles).strip()
+            content_raw = content_match.group(1) if content_match else ''
+            content_fixed = re.sub(r'^.*?</head>', '', content_raw, flags=re.S).strip()
+            content_fixed = re.sub(r'<body[^>]*>', '', content_fixed, flags=re.I)
+            content_fixed = re.sub(r'</body>', '', content_fixed, flags=re.I)
+            content_fixed = re.sub(r'</html>', '', content_fixed, flags=re.I)
+            content_fixed = content_fixed.strip()
+            scripts = scripts_match.group(1).strip() if scripts_match else ''
+            new_parts = [
+                '{% extends "base.html" %}',
+                '{% block title %}' + title_text + '{% endblock %}',
+                '{% block head_extra %}',
+                head_extra,
+                '{% endblock %}',
+                '{% block content %}',
+                content_fixed,
+                '{% endblock %}',
+            ]
+            if scripts:
+                new_parts.extend(['{% block scripts %}', scripts, '{% endblock %}'])
+            path.write_text('\n'.join([part for part in new_parts if part is not None]), encoding='utf-8')
+            print(f'rewrote {path} (processed base template)')
+            continue
+        m_body = re.search(r'<body[^>]*>', text, flags=re.I)
+        m_body_close = re.search(r'</body>', text, flags=re.I)
+        if not m_body or not m_body_close:
+            print(f'skip {path} no body tags')
+            continue
+        head = text[:m_body.start()]
+        body = text[m_body.end():m_body_close.start()]
+        title_match = re.search(r'<title>(.*?)</title>', head, flags=re.I|re.S)
+        title_text = title_match.group(1).strip() if title_match else 'Sabr Central'
+        head_extra = normalize_head_extra(head)
+        body, scripts = extract_scripts(body)
+        new_parts = [
+            '{% extends "base.html" %}',
+            '{% block title %}' + title_text + '{% endblock %}',
+            '{% block head_extra %}',
+            head_extra,
+            '{% endblock %}',
+            '{% block content %}',
+            body,
+            '{% endblock %}',
+        ]
+        if scripts:
+            new_parts.extend(['{% block scripts %}', scripts, '{% endblock %}'])
+        path.write_text('\n'.join([part for part in new_parts if part is not None]), encoding='utf-8')
+        print(f'rewrote {path} (converted raw template)')

@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدخال بيانات الشهادة</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
+{% extends "base.html" %}
+{% block title %}إدخال بيانات الشهادة{% endblock %}
+{% block head_extra %}
+<style>
     :root {
       --bg: #f4f7fb;
       --surface: rgba(255, 255, 255, 0.86);
@@ -171,9 +165,9 @@
       }
     }
   </style>
-</head>
-<body>
-  <div class="container">
+{% endblock %}
+{% block content %}
+<div class="container">
     <h1>إدخال بيانات الشهادة</h1>
 
     <form method="post">
@@ -197,5 +191,4 @@
       {% endif %}
     </div>
   </div>
-</body>
-</html>
+{% endblock %}
