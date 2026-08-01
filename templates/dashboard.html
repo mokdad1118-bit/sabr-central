@@ -40,9 +40,9 @@
     }
 
     .container {
-      max-width: 920px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 36px 18px 40px;
+      padding: 36px 24px 42px;
       text-align: center;
     }
 
@@ -61,22 +61,47 @@
       font-size: 16px;
     }
 
-    .panel {
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 26px;
+      justify-items: stretch;
+    }
+
+    .card {
       background: var(--surface);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(220, 229, 238, 0.9);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 26px 24px;
-      margin-top: 22px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
+      gap: 16px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--primary-dark);
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 220px;
       text-decoration: none;
       border: none;
       cursor: pointer;
@@ -89,13 +114,19 @@
       box-shadow: 0 10px 22px rgba(95, 126, 168, 0.22);
       transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
       font-family: "Cairo", "Amiri", sans-serif;
-      margin: 8px 6px;
+      width: fit-content;
     }
 
     .btn:hover {
       transform: translateY(-2px);
       filter: brightness(1.03);
       box-shadow: 0 14px 28px rgba(95, 126, 168, 0.28);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px rgba(57, 82, 110, 0.14);
+      border-color: rgba(95, 126, 168, 0.22);
     }
 
     .logout {
@@ -142,13 +173,37 @@
     <h1>لوحة التحكم</h1>
     <p>مرحبًا {{ username }}</p>
 
-    <div class="panel">
+    <div class="cards">
       {% if session.get('role') == 'admin' %}
-        <p><a class="btn" href="{{ url_for('admin_dashboard') }}">الدخول إلى لوحة الأدمن</a></p>
-        <p><a class="btn" href="{{ url_for('students') }}">عرض جميع الطلاب</a></p>
+        <div class="card">
+          <div>
+            <h2>لوحة الأدمن</h2>
+            <p>الوصول السريع إلى إدارة المراكز، اللجان، والتقارير من مكان واحد.</p>
+          </div>
+          <a class="btn" href="{{ url_for('admin_dashboard') }}">فتح لوحة الأدمن</a>
+        </div>
+        <div class="card">
+          <div>
+            <h2>قائمة الطلاب</h2>
+            <p>عرض جميع الطلاب مع أدوات البحث والإدارة المباشرة.</p>
+          </div>
+          <a class="btn" href="{{ url_for('students') }}">عرض الطلاب</a>
+        </div>
       {% elif session.get('role') == 'committee_member' %}
-        <p><a class="btn" href="{{ url_for('member_dashboard') }}">الدخول إلى لوحة عضو اللجنة</a></p>
-        <p><a class="btn" href="{{ url_for('member_dashboard') }}">عرض الطلاب الخاصين بي</a></p>
+        <div class="card">
+          <div>
+            <h2>لوحة عضو اللجنة</h2>
+            <p>انتقال سريع إلى واجهة إدارة الطلاب الخاصة بك.</p>
+          </div>
+          <a class="btn" href="{{ url_for('member_dashboard') }}">فتح لوحة اللجنة</a>
+        </div>
+        <div class="card">
+          <div>
+            <h2>طلابك</h2>
+            <p>مشاهدة الطلاب المرتبطين بك وإضافة بيانات الاختبارات بسهولة.</p>
+          </div>
+          <a class="btn" href="{{ url_for('member_dashboard') }}">عرض الطلاب الخاصين بي</a>
+        </div>
       {% endif %}
     </div>
 
