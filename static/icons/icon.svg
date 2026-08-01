@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="sabrmarkze icon">
+  <rect width="512" height="512" rx="120" fill="#5f7ea8"/>
+  <rect x="92" y="92" width="328" height="328" rx="70" fill="#ffffff" opacity="0.95"/>
+  <path d="M176 146h160c40 0 72 32 72 72v56c0 40-32 72-72 72H176z" fill="#486281"/>
+  <path d="M202 218h108" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
+  <path d="M202 266h84" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="232" cy="232" r="18" fill="#ffffff"/>
+</svg>

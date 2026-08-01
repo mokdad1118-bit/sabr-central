@@ -1,0 +1,19 @@
+{
+  "name": "sabrmarkze",
+  "short_name": "sabrmarkze",
+  "description": "Sabr Central application",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#5f7ea8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
