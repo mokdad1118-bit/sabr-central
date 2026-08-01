@@ -780,3 +780,25 @@ th a:hover {
     color: var(--muted);
   }
 }
+
+/* Admin dashboard: two cards per row for a neat layout */
+.admin-dashboard .cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 26px;
+  align-items: stretch;
+}
+
+.admin-dashboard .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
+  padding: 22px;
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard .cards {
+    grid-template-columns: 1fr;
+  }
+}
