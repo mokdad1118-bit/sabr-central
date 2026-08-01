@@ -800,5 +800,24 @@ th a:hover {
 @media (max-width: 768px) {
   .admin-dashboard .cards {
     grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .admin-dashboard .card {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .admin-dashboard .card h3 {
+    font-size: 1.05rem;
+  }
+
+  .admin-dashboard .card p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .admin-dashboard .card .btn {
+    width: 100%;
   }
 }
