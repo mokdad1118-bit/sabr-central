@@ -294,6 +294,64 @@
       thead th, tbody td { padding: 12px 14px; }
       .detail-row { grid-template-columns: 1fr; }
       .modal-header h2 { font-size: 22px; }
+
+      .table-wrap table,
+      .table-wrap thead,
+      .table-wrap tbody,
+      .table-wrap th,
+      .table-wrap td,
+      .table-wrap tr {
+        display: block;
+      }
+
+      .table-wrap thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      .table-wrap tr {
+        margin-bottom: 16px;
+        border: 1px solid rgba(220, 229, 238, 0.95);
+        border-radius: 18px;
+        padding: 14px 16px;
+        background: #fff;
+      }
+
+      .table-wrap td {
+        position: relative;
+        padding: 10px 16px 10px 120px;
+        text-align: right;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .table-wrap td::before {
+        position: absolute;
+        top: 10px;
+        right: 16px;
+        width: 100px;
+        white-space: nowrap;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .table-wrap td:nth-of-type(1)::before { content: "الاسم"; }
+      .table-wrap td:nth-of-type(2)::before { content: "المركز"; }
+      .table-wrap td:nth-of-type(3)::before { content: "البريد الإلكتروني"; }
+      .table-wrap td:nth-of-type(4)::before { content: "الرقم الوطني"; }
+      .table-wrap td:nth-of-type(5)::before { content: "البلدة"; }
+      .table-wrap td:nth-of-type(6)::before { content: "التعليم الشرعي"; }
+      .table-wrap td:nth-of-type(7)::before { content: "إجازة القرآن"; }
+      .table-wrap td:nth-of-type(8)::before { content: "حذف"; }
+
+      .table-wrap td button,
+      .table-wrap td a {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -461,5 +519,6 @@
       if (e.key === 'Escape') closeMemberModal();
     });
   </script>
+  <script src="{{ url_for('static', filename='js/pwa.js') }}"></script>
 </body>
 </html>
