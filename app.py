@@ -23,12 +23,30 @@ DB_NAME = app.config["DATABASE"]
 EXAM_RESULTS_UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads", "exam_results")
 ALLOWED_EXAM_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
+
+def ensure_admin_user(username="bayan", password="123456789"):
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    try:
+        row = conn.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()
+        if row is None:
+            hashed_password = generate_password_hash(password)
+            conn.execute(
+                "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+                (username, hashed_password, "admin"),
+            )
+            conn.commit()
+    finally:
+        conn.close()
+
+
 os.makedirs(os.path.dirname(DB_NAME), exist_ok=True)
 with app.app_context():
     if not os.path.exists(DB_NAME):
         conn = sqlite3.connect(DB_NAME)
         conn.close()
     init_db()
+    ensure_admin_user()
 
 
 def allowed_exam_image(filename):
