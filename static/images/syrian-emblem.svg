@@ -1,18 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 260" role="img" aria-labelledby="title desc">
   <title>شعار الجمهورية العربية السورية</title>
-  <desc>شعار مبسط يتضمن نجمة وثلاثة ألوان سورية</desc>
+  <desc>شعار يحاكي النسر السوري الرسمي مع الدرع الوطني والنجوم.</desc>
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ce1126"/>
-      <stop offset="50%" stop-color="#fff"/>
+      <stop offset="45%" stop-color="#ffffff"/>
       <stop offset="100%" stop-color="#0f2b56"/>
     </linearGradient>
+    <linearGradient id="eagleBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e6c266"/>
+      <stop offset="100%" stop-color="#b77d18"/>
+    </linearGradient>
   </defs>
-  <circle cx="120" cy="120" r="108" fill="#fff" stroke="#000" stroke-width="4"/>
-  <circle cx="120" cy="120" r="96" fill="url(#grad)"/>
-  <path d="M80 90 L100 60 L120 90 L150 95 L125 120 L130 150 L100 135 L70 150 L75 120 L50 95 Z" fill="#fff" stroke="#000" stroke-width="3"/>
-  <path d="M120 40 L130 75 L170 80 L135 105 L145 140 L120 120 L95 140 L105 105 L70 80 L110 75 Z" fill="#f9d616" opacity="0.9"/>
-  <circle cx="120" cy="120" r="18" fill="#fff"/>
-  <path d="M120 75 L128 103 L157 103 L132 120 L140 148 L120 128 L100 148 L108 120 L83 103 L112 103 Z" fill="#ce1126"/>
-  <text x="120" y="220" font-family="Amiri, serif" font-size="18" text-anchor="middle" fill="#0f2b56">الجمهورية العربية السورية</text>
+  <rect width="280" height="260" rx="24" ry="24" fill="#ffffff"/>
+  <g transform="translate(140 125)">
+    <path d="M-70 0 C-75 -40 -34 -88 0 -92 C34 -88 76 -40 70 0 C70 35 40 62 0 68 C-40 62 -70 35 -70 0 Z" fill="url(#eagleBody)" stroke="#8b6d23" stroke-width="2"/>
+    <path d="M-72 2 C-86 -14 -70 -70 -42 -88 C-26 -98 0 -102 0 -102 C0 -102 26 -98 42 -88 C70 -70 86 -14 72 2 C60 -6 44 -28 28 -40 C18 -48 8 -56 0 -60 C-8 -56 -18 -48 -28 -40 C-44 -28 -60 -6 -72 2 Z" fill="#d9a42f"/>
+    <path d="M-98 32 C-88 12 -66 -12 -44 -24 C-62 -22 -90 -8 -100 16 C-106 34 -102 56 -82 64 C-76 46 -68 28 -58 10 C-70 18 -82 24 -98 32 Z" fill="#d9a42f"/>
+    <path d="M98 32 C88 12 66 -12 44 -24 C62 -22 90 -8 100 16 C106 34 102 56 82 64 C76 46 68 28 58 10 C70 18 82 24 98 32 Z" fill="#d9a42f"/>
+    <path d="M-72 62 L-94 102" stroke="#8b6d23" stroke-width="5" stroke-linecap="round"/>
+    <path d="M72 62 L94 102" stroke="#8b6d23" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-68 -14 L-98 -32" stroke="#8b6d23" stroke-width="6" stroke-linecap="round"/>
+    <path d="M68 -14 L98 -32" stroke="#8b6d23" stroke-width="6" stroke-linecap="round"/>
+    <path d="M-22 26 L22 26 L22 62 Q0 78 -22 62 Z" fill="#ffffff" stroke="#000" stroke-width="1.5"/>
+    <path d="M-18 26 L18 26 L18 58 Q0 74 -18 58 Z" fill="url(#shieldGrad)"/>
+    <path d="M-4 42 L0 32 L4 42 L14 44 L6 50 L8 60 L0 58 L-8 60 L-6 50 L-14 44 Z" fill="#ce1126"/>
+    <circle cx="0" cy="44" r="6" fill="#0f2b56"/>
+    <circle cx="0" cy="54" r="4" fill="#ce1126"/>
+    <path d="M-26 -62 L-18 -90" stroke="#8b6d23" stroke-width="7" stroke-linecap="round"/>
+    <path d="M26 -62 L18 -90" stroke="#8b6d23" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="-40" cy="-94" r="6" fill="#ce1126"/>
+    <circle cx="40" cy="-94" r="6" fill="#ce1126"/>
+  </g>
+  <text x="140" y="246" font-family="Amiri, serif" font-size="18" text-anchor="middle" fill="#1c3b5e">الجمهورية العربية السورية</text>
 </svg>
