@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block title %}لوحة الأدمن{% endblock %}{% block content %}
 <div class="container admin-dashboard">
-    <h1>لوحة الأدمن</h1>
+    <div class="admin-dashboard-header">
+      <img src="{{ url_for('static', filename='images/syrian-emblem.svg') }}" alt="شعار الجمهورية العربية السورية" class="admin-logo">
+      <div class="admin-header-text">
+        <h1>لوحة الأدمن</h1>
+        <p class="admin-agency">مديرية أوقاف درعا</p>
+      </div>
+    </div>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}

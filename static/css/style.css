@@ -781,6 +781,36 @@ th a:hover {
   }
 }
 
+/* Admin dashboard header */
+.admin-dashboard .admin-dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.admin-dashboard .admin-dashboard-header .admin-logo {
+  width: 92px;
+  max-width: 100%;
+  height: auto;
+}
+
+.admin-dashboard .admin-dashboard-header .admin-header-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.8rem;
+}
+
+.admin-dashboard .admin-dashboard-header .admin-header-text .admin-agency {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1d2f4d;
+}
+
 /* Admin dashboard: two cards per row for a neat layout */
 .admin-dashboard .cards {
   display: grid;
