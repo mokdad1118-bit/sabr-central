@@ -785,28 +785,28 @@ th a:hover {
 .admin-dashboard .admin-dashboard-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 18px;
-  padding: 16px;
-  margin-bottom: 22px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
 .admin-dashboard .admin-dashboard-header .admin-logo {
-  width: 84px;
-  max-width: 100%;
+  width: 72px;
   height: auto;
 }
 
 .admin-dashboard .admin-dashboard-header .admin-header-text h1 {
   margin: 0 0 4px;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 .admin-dashboard .admin-dashboard-header .admin-header-text .admin-agency {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #1d2f4d;
 }
@@ -814,17 +814,22 @@ th a:hover {
 /* Admin dashboard: two cards per row for a compact, neat layout */
 .admin-dashboard .cards {
   display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
   gap: 18px;
-  align-items: stretch;
+  width: 100%;
 }
 
 .admin-dashboard .card {
+  background: var(--surface);
+  border: 1px solid rgba(220, 229, 238, 0.95);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 140px;
   padding: 18px;
+  box-shadow: 0 14px 28px rgba(63, 89, 133, 0.08);
+  width: 100%;
 }
 
 .admin-dashboard .card h3 {
@@ -833,24 +838,24 @@ th a:hover {
 }
 
 .admin-dashboard .card p {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
 .admin-dashboard .card .btn {
   width: fit-content;
-  padding: 10px 16px;
+  padding: 10px 14px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .admin-dashboard .cards {
-    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
     gap: 16px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 520px) {
   .admin-dashboard .cards {
     grid-template-columns: 1fr;
     gap: 18px;
@@ -858,46 +863,7 @@ th a:hover {
 
   .admin-dashboard .card {
     min-height: auto;
-    padding: 18px;
-  }
-
-  .admin-dashboard .card h3 {
-    font-size: 1.05rem;
-  }
-
-  .admin-dashboard .card p {
-    font-size: 0.95rem;
-    line-height: 1.65;
-  }
-
-  .admin-dashboard .card .btn {
-    width: 100%;
-  }
-}
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 160px;
-  padding: 22px;
-}
-
-@media (max-width: 768px) {
-  .admin-dashboard .cards {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .admin-dashboard .card {
-    min-height: auto;
-    padding: 18px;
-  }
-
-  .admin-dashboard .card h3 {
-    font-size: 1.05rem;
-  }
-
-  .admin-dashboard .card p {
-    font-size: 0.95rem;
-    line-height: 1.65;
+    padding: 16px;
   }
 
   .admin-dashboard .card .btn {
